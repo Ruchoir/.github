@@ -1,0 +1,49 @@
+# Reusable: the conventions every Ruchoir repository follows (see common-rules.md).
+#
+# Call it from a repository's CI:
+#
+#   jobs:
+#     conventions:
+#       uses: Ruchoir/.github/.github/workflows/conventions.yml@v1
+#
+# It checks out the calling repository with its whole history, then this repository at `rules-ref`,
+# and runs scripts/check-conventions.sh against the common rules of that ref.
+name: Conventions
+
+on:
+  workflow_call:
+    inputs:
+      rules-ref:
+        description: Ref of Ruchoir/.github whose rules and check apply. Keep it equal to the tag in `uses`.
+        type: string
+        default: v1
+
+permissions:
+  contents: read
+
+jobs:
+  conventions:
+    name: Repository conventions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7.0.1
+        with:
+          # The commits of a pull request are checked, so the history has to be deep enough to see
+          # them; the AI attribution check also reads the whole history.
+          fetch-depth: 0
+
+      - name: Check out the organization's rules
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: Ruchoir/.github
+          ref: ${{ inputs.rules-ref }}
+          # Untracked inside the checkout, so the checks never read it as part of the repository.
+          path: .ruchoir-rules
+
+      - name: Check the conventions
+        env:
+          RANGE: ${{ github.event_name == 'pull_request' && format('{0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) || '' }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          BRANCH: ${{ github.head_ref }}
+        run: bash .ruchoir-rules/scripts/check-conventions.sh .ruchoir-rules/common-rules.md

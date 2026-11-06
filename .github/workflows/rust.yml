@@ -1,0 +1,68 @@
+# Reusable: build, lint, test and dependency checks of a Rust workspace.
+#
+#   jobs:
+#     rust:
+#       uses: Ruchoir/.github/.github/workflows/rust.yml@v1
+#
+# The toolchain comes from the repository's rust-toolchain.toml. Dependencies are checked by
+# cargo-deny (Embark Studios, Sweden) against this repository's deny.toml: allowed licences and
+# sources, banned crates, RustSec advisories.
+name: Rust
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: Directory of the Cargo workspace, relative to the repository root.
+        type: string
+        default: .
+      rules-ref:
+        description: Ref of Ruchoir/.github whose deny.toml applies. Keep it equal to the tag in `uses`.
+        type: string
+        default: v1
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    name: Rust
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Check out the organization's rules
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: Ruchoir/.github
+          ref: ${{ inputs.rules-ref }}
+          path: .ruchoir-rules
+
+      - name: Install the pinned toolchain
+        # With no argument, rustup installs what rust-toolchain.toml names.
+        run: rustup toolchain install
+
+      - name: Cache the build
+        # Swatinem/rust-cache: Arpad Borsos, Austria, community, LGPL-3.0.
+        uses: Swatinem/rust-cache@v2.9.3
+        with:
+          workspaces: ${{ inputs.working-directory }}
+
+      - name: Format
+        run: cargo fmt --all --check
+
+      - name: Lint
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Test
+        run: cargo test --all-features
+
+      - name: Install cargo-deny
+        run: cargo install cargo-deny --locked
+
+      - name: Dependencies
+        run: cargo deny --all-features check --config "$GITHUB_WORKSPACE/.ruchoir-rules/deny.toml"

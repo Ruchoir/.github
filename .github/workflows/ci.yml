@@ -1,0 +1,25 @@
+# This repository's own CI. It calls the reusable conventions workflow from the same commit, so a
+# change that breaks it fails here before any other repository is affected.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scripts:
+    name: Scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Syntax
+        run: for script in scripts/*.sh; do bash -n "$script"; done
+
+  conventions:
+    uses: ./.github/workflows/conventions.yml
+    with:
+      rules-ref: ${{ github.sha }}
