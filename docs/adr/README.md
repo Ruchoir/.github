@@ -14,3 +14,4 @@ accepted ADR is never rewritten: a later one supersedes it, and both say so.
 | [0007](0007-licences.md) | AGPL for services and apps, MIT OR Apache-2.0 for what others embed |
 | [0008](0008-repository-rules-and-releases.md) | Common rules, pull requests, squash merges, tags that publish without deploying |
 | [0009](0009-moving-code-with-its-history.md) | Code moves with its history, cleaned messages, merged with a merge commit |
+| [0010](0010-which-service-owns-which-route.md) | Which service owns each family of routes of today's API |
