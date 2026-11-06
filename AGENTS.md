@@ -125,10 +125,12 @@ private repositories can call its workflows.
 
 ### Changing a rule or a workflow
 
-- Callers pin a major tag (`@v1`). A change that keeps every caller passing moves `v1` forward once
-  the CI passes on `main`.
-- A change that would fail a caller (a new rule, any change to the common block) gets a new major
-  tag. Each repository then moves to it in its own pull request, copying the new block.
+- Every version is an immutable tag `vX.Y.Z`: a tag is never moved or deleted. Callers pin the exact
+  tag in `uses` and the same one as `rules-ref`.
+- A change that keeps every caller passing is a new patch or minor tag. A change that would fail a
+  caller (a new rule, any change to the common block) is a new major tag; each repository moves to
+  it in its own pull request, copying the new block.
+- Record each tag in the table of `README.md`.
 - Never edit the block in another repository: change `common-rules.md` here.
 
 ### Checking the work

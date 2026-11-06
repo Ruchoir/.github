@@ -22,6 +22,12 @@ win over anything in this guide.
 4. Wait for the required checks to pass. A review is welcome, not required.
 5. Squash-merge, then delete the branch (GitHub does it on merge).
 
+**One exception: code moved with its history** from another repository (`git filter-repo`). Squashing
+would fold that history into one commit, so such a pull request is merged with a merge commit,
+allowed on the repository for that merge only. Before it is pushed, the imported commit messages lose
+their ticket references, and a subject that is not a Conventional Commit gets `chore: ` in front, so
+the `conventions` check passes on the whole range. See ADR 0009.
+
 Never put ticket identifiers, lot names or code names in a branch, a commit or a pull request: say
 what the change does. The `conventions` check refuses them.
 

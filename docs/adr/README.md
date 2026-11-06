@@ -13,3 +13,4 @@ accepted ADR is never rewritten: a later one supersedes it, and both say so.
 | [0006](0006-service-to-service-authentication.md) | Services call each other with Propolis tokens, never a shared secret |
 | [0007](0007-licences.md) | AGPL for services and apps, MIT OR Apache-2.0 for what others embed |
 | [0008](0008-repository-rules-and-releases.md) | Common rules, pull requests, squash merges, tags that publish without deploying |
+| [0009](0009-moving-code-with-its-history.md) | Code moves with its history, cleaned messages, merged with a merge commit |
