@@ -76,6 +76,8 @@ tag in `uses` and pass the same one as `rules-ref`:
 |---|---|
 | `v1` | First version |
 | `v1.0.1` | The Rust workflow's cargo-deny step reads `deny.toml` at the workspace root |
+| `v1.1.0` | Immutable tags; moving code with its history (ADR 0009) |
+| `v1.2.0` | Which service owns which route (ADR 0010) |
 
 ## Licence
 
