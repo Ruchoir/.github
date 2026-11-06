@@ -65,4 +65,8 @@ jobs:
         run: cargo install cargo-deny --locked
 
       - name: Dependencies
-        run: cargo deny --all-features check --config "$GITHUB_WORKSPACE/.ruchoir-rules/deny.toml"
+        # cargo-deny reads deny.toml at the workspace root. The organization's file is copied there,
+        # so a repository never checks against a local one of its own.
+        run: |
+          cp "$GITHUB_WORKSPACE/.ruchoir-rules/deny.toml" deny.toml
+          cargo deny --all-features check
