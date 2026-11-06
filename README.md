@@ -29,16 +29,20 @@ on:
 
 jobs:
   conventions:
-    uses: Ruchoir/.github/.github/workflows/conventions.yml@v1
+    uses: Ruchoir/.github/.github/workflows/conventions.yml@v1.0.1
+    with:
+      rules-ref: v1.0.1
 ```
 
 Once the repository holds code, add the language jobs the same way:
 
 ```yaml
   rust:
-    uses: Ruchoir/.github/.github/workflows/rust.yml@v1
+    uses: Ruchoir/.github/.github/workflows/rust.yml@v1.0.1
+    with:
+      rules-ref: v1.0.1
   node:
-    uses: Ruchoir/.github/.github/workflows/node.yml@v1
+    uses: Ruchoir/.github/.github/workflows/node.yml@v1.0.1
     with:
       scripts: lint typecheck test i18n:check
 ```
@@ -53,9 +57,25 @@ The `conventions` check fails when:
 
 ## Versions
 
-Callers pin a major tag (`@v1`). A change that keeps every caller passing moves `v1` forward once
-the CI passes on `main`. A change that would fail a caller (a new rule, a changed block) gets a new
-major tag; each repository then moves to it in its own pull request, copying the new block.
+Every version of this repository is an immutable tag, `vX.Y.Z`, never moved. Callers pin the exact
+tag in `uses` and pass the same one as `rules-ref`:
+
+```yaml
+  rust:
+    uses: Ruchoir/.github/.github/workflows/rust.yml@v1.0.1
+    with:
+      rules-ref: v1.0.1
+```
+
+- A fix or an addition that keeps every caller passing is a new patch or minor tag. Each repository
+  moves to it in its own pull request, when it needs it.
+- A change that would fail a caller (a new rule, any change to the common block) is a new major tag.
+  Each repository then moves to it in its own pull request, copying the new block.
+
+| Tag | What changed |
+|---|---|
+| `v1` | First version |
+| `v1.0.1` | The Rust workflow's cargo-deny step reads `deny.toml` at the workspace root |
 
 ## Licence
 
