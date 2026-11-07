@@ -47,6 +47,10 @@ Once the repository holds code, add the language jobs the same way:
       scripts: lint typecheck test i18n:check
 ```
 
+A service whose tests need its stores adds `postgres: true` and `valkey: true` to the `rust` job (from
+`v1.6.0`). They then find them in `RUCHOIR_TEST_DATABASE_URL` and `RUCHOIR_TEST_VALKEY_URL`, and
+`RUCHOIR_TEST_STORES=required` tells them not to skip.
+
 The `conventions` check fails when:
 
 - a tracked text file holds an em dash;
@@ -81,6 +85,7 @@ tag in `uses` and pass the same one as `rules-ref`:
 | `v1.3.0` | Server events and security events (ADR 0011); Propolis's host (ADR 0012) |
 | `v1.4.0` | One version for `Ruchoir/core` (ADR 0013) |
 | `v1.5.0` | `core` under the MPL-2.0 (ADR 0014); events through the hub (ADR 0015); the hub's socket ticket (ADR 0016); a role's permissions (ADR 0017) |
+| `v1.6.0` | The `rust` workflow can run the tests next to PostgreSQL and Valkey (`postgres`, `valkey`) |
 
 ## Licence
 

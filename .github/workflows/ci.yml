@@ -23,3 +23,18 @@ jobs:
     uses: ./.github/workflows/conventions.yml
     with:
       rules-ref: ${{ github.sha }}
+
+  # The shared Rust workflow, on a fixture crate: without stores, then with PostgreSQL and Valkey.
+  rust-without-stores:
+    uses: ./.github/workflows/rust.yml
+    with:
+      working-directory: tests/rust-fixture
+      rules-ref: ${{ github.sha }}
+
+  rust-with-stores:
+    uses: ./.github/workflows/rust.yml
+    with:
+      working-directory: tests/rust-fixture
+      rules-ref: ${{ github.sha }}
+      postgres: true
+      valkey: true
