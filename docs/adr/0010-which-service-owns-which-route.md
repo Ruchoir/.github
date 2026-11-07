@@ -1,6 +1,6 @@
 # 0010. Which service owns which route
 
-- Status: accepted
+- Status: accepted; superseded for Propolis's organisation routes by ADR 0018
 - Date: 2026-11-06
 
 ## Context
