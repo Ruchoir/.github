@@ -20,7 +20,10 @@ mod tests {
         let database = var("RUCHOIR_TEST_DATABASE_URL");
         let valkey = var("RUCHOIR_TEST_VALKEY_URL");
         if var("RUCHOIR_TEST_STORES") == "required" {
-            assert_eq!(database, "postgres://ruchoir:ruchoir@localhost:5432/ruchoir_test");
+            assert_eq!(
+                database,
+                "postgres://ruchoir:ruchoir@localhost:5432/ruchoir_test"
+            );
             assert_eq!(valkey, "redis://localhost:6379");
             assert!(answers("127.0.0.1:5432"), "PostgreSQL does not answer");
             assert!(answers("127.0.0.1:6379"), "Valkey does not answer");
