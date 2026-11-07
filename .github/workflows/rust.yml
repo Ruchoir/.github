@@ -2,7 +2,16 @@
 #
 #   jobs:
 #     rust:
-#       uses: Ruchoir/.github/.github/workflows/rust.yml@v1
+#       uses: Ruchoir/.github/.github/workflows/rust.yml@v1.6.0
+#       with:
+#         rules-ref: v1.6.0
+#         postgres: true
+#         valkey: true
+#
+# With `postgres` or `valkey`, the tests run next to a real PostgreSQL or Valkey, the versions the
+# products run, and find them in RUCHOIR_TEST_DATABASE_URL and RUCHOIR_TEST_VALKEY_URL.
+# RUCHOIR_TEST_STORES=required tells a test suite that skips without its stores to fail instead:
+# a suite that skips itself in CI reports green while testing nothing.
 #
 # The toolchain comes from the repository's rust-toolchain.toml. Dependencies are checked by
 # cargo-deny (Embark Studios, Sweden) against this repository's deny.toml: allowed licences and
@@ -20,6 +29,14 @@ on:
         description: Ref of Ruchoir/.github whose deny.toml applies. Keep it equal to the tag in `uses`.
         type: string
         default: v1
+      postgres:
+        description: Run the tests next to a PostgreSQL database.
+        type: boolean
+        default: false
+      valkey:
+        description: Run the tests next to a Valkey cache.
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -28,6 +45,30 @@ jobs:
   rust:
     name: Rust
     runs-on: ubuntu-latest
+    # A service whose image is empty is not started.
+    services:
+      postgres:
+        image: ${{ inputs.postgres && 'postgres:18-alpine' || '' }}
+        env:
+          POSTGRES_USER: ruchoir
+          POSTGRES_PASSWORD: ruchoir
+          POSTGRES_DB: ruchoir_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ruchoir"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      valkey:
+        image: ${{ inputs.valkey && 'valkey/valkey:9-alpine' || '' }}
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "valkey-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
@@ -59,6 +100,10 @@ jobs:
         run: cargo clippy --all-targets --all-features -- -D warnings
 
       - name: Test
+        env:
+          RUCHOIR_TEST_DATABASE_URL: ${{ inputs.postgres && 'postgres://ruchoir:ruchoir@localhost:5432/ruchoir_test' || '' }}
+          RUCHOIR_TEST_VALKEY_URL: ${{ inputs.valkey && 'redis://localhost:6379' || '' }}
+          RUCHOIR_TEST_STORES: ${{ (inputs.postgres || inputs.valkey) && 'required' || '' }}
         run: cargo test --all-features
 
       - name: Install cargo-deny

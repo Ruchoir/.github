@@ -1,0 +1,2 @@
+# Build output of the workflow fixture.
+/tests/rust-fixture/target/

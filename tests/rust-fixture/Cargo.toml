@@ -1,0 +1,9 @@
+[package]
+name = "rust-workflow-fixture"
+version = "0.0.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+publish = false
+description = "Exercises the shared rust workflow of Ruchoir/.github from its own CI."
+
+[dependencies]
