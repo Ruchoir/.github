@@ -5,6 +5,11 @@
 #       uses: Ruchoir/.github/.github/workflows/node.yml@v1
 #       with:
 #         scripts: lint typecheck test i18n:check
+#         github-packages: true   # when it installs @ruchoir packages
+#
+# GitHub Packages asks a token even for a public package, so a project that installs the packages of
+# Ruchoir/core sets `github-packages`, and its calling job grants `packages: read`. The job's own
+# GITHUB_TOKEN is then given to npm for the @ruchoir scope, and to nothing else.
 #
 # Node comes from the project's .nvmrc and pnpm from the `packageManager` field of its package.json,
 # through corepack (shipped with Node 24). A script the package does not define is skipped and said so.
@@ -21,9 +26,15 @@ on:
         description: Package scripts to run, in order, separated by spaces.
         type: string
         default: lint typecheck test
+      github-packages:
+        description: Install the @ruchoir packages from GitHub Packages (the caller grants packages read).
+        type: boolean
+        default: false
 
+# `packages: read` only takes effect when the caller grants it too.
 permissions:
   contents: read
+  packages: read
 
 jobs:
   node:
@@ -40,11 +51,15 @@ jobs:
         uses: actions/setup-node@v7.1.0
         with:
           node-version-file: ${{ inputs.working-directory }}/.nvmrc
+          registry-url: ${{ inputs.github-packages && 'https://npm.pkg.github.com' || '' }}
+          scope: ${{ inputs.github-packages && '@ruchoir' || '' }}
 
       - name: Enable pnpm
         run: corepack enable
 
       - name: Install
+        env:
+          NODE_AUTH_TOKEN: ${{ inputs.github-packages && secrets.GITHUB_TOKEN || '' }}
         run: pnpm install --frozen-lockfile
 
       - name: Run the scripts
@@ -60,4 +75,6 @@ jobs:
           done
 
       - name: Audit
+        env:
+          NODE_AUTH_TOKEN: ${{ inputs.github-packages && secrets.GITHUB_TOKEN || '' }}
         run: pnpm audit --prod

@@ -89,6 +89,7 @@ tag in `uses` and pass the same one as `rules-ref`:
 | `v1.7.0` | `deny.toml` allows `0BSD` |
 | `v1.8.0` | Propolis's organisation routes (ADR 0018) |
 | `v1.9.0` | cargo-deny checks every member of a workspace; RUSTSEC-2023-0071 ignored, with its reason |
+| `v1.10.0` | The `node` workflow installs the `@ruchoir` packages from GitHub Packages (`github-packages`) |
 
 ## Licence
 
