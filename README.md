@@ -88,6 +88,7 @@ tag in `uses` and pass the same one as `rules-ref`:
 | `v1.6.0` | The `rust` workflow can run the tests next to PostgreSQL and Valkey (`postgres`, `valkey`) |
 | `v1.7.0` | `deny.toml` allows `0BSD` |
 | `v1.8.0` | Propolis's organisation routes (ADR 0018) |
+| `v1.9.0` | cargo-deny checks every member of a workspace; RUSTSEC-2023-0071 ignored, with its reason |
 
 ## Licence
 

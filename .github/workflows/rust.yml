@@ -114,4 +114,4 @@ jobs:
         # so a repository never checks against a local one of its own.
         run: |
           cp "$GITHUB_WORKSPACE/.ruchoir-rules/deny.toml" deny.toml
-          cargo deny --all-features check
+          cargo deny --workspace --all-features check
