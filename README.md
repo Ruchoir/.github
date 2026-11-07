@@ -79,6 +79,7 @@ tag in `uses` and pass the same one as `rules-ref`:
 | `v1.1.0` | Immutable tags; moving code with its history (ADR 0009) |
 | `v1.2.0` | Which service owns which route (ADR 0010) |
 | `v1.3.0` | Server events and security events (ADR 0011); Propolis's host (ADR 0012) |
+| `v1.4.0` | One version for `Ruchoir/core` (ADR 0013) |
 
 ## Licence
 

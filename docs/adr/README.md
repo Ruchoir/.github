@@ -17,3 +17,4 @@ accepted ADR is never rewritten: a later one supersedes it, and both say so.
 | [0010](0010-which-service-owns-which-route.md) | Which service owns each family of routes of today's API |
 | [0011](0011-server-events-and-security-events.md) | `ruchoir-events` between services, Security Event Tokens for OpenID Connect security events |
 | [0012](0012-propolis-host.md) | Propolis answers on `id.` of the instance's domain, fixed at install time |
+| [0013](0013-one-version-for-core.md) | `Ruchoir/core` is released as one version; npm packages on GitHub Packages, crates from the tag |
