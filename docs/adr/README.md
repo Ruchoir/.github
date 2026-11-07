@@ -18,3 +18,7 @@ accepted ADR is never rewritten: a later one supersedes it, and both say so.
 | [0011](0011-server-events-and-security-events.md) | `ruchoir-events` between services, Security Event Tokens for OpenID Connect security events |
 | [0012](0012-propolis-host.md) | Propolis answers on `id.` of the instance's domain, fixed at install time |
 | [0013](0013-one-version-for-core.md) | `Ruchoir/core` is released as one version; npm packages on GitHub Packages, crates from the tag |
+| [0014](0014-core-under-the-mpl.md) | `Ruchoir/core` is public, under the MPL-2.0 (supersedes 0007 for `core`) |
+| [0015](0015-server-events-travel-through-the-hub.md) | Server events travel through the hub, which forwards them signed and retries |
+| [0016](0016-a-ticket-to-open-the-hub-socket.md) | A page opens the hub's socket with a single-use ticket from its product |
+| [0017](0017-a-roles-permissions-live-in-each-product.md) | Propolis holds a role's identity; each product holds what the role may do in it |
