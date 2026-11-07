@@ -80,6 +80,7 @@ tag in `uses` and pass the same one as `rules-ref`:
 | `v1.2.0` | Which service owns which route (ADR 0010) |
 | `v1.3.0` | Server events and security events (ADR 0011); Propolis's host (ADR 0012) |
 | `v1.4.0` | One version for `Ruchoir/core` (ADR 0013) |
+| `v1.5.0` | `core` under the MPL-2.0 (ADR 0014); events through the hub (ADR 0015); the hub's socket ticket (ADR 0016); a role's permissions (ADR 0017) |
 
 ## Licence
 

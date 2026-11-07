@@ -1,6 +1,6 @@
 # 0007. Licences
 
-- Status: accepted
+- Status: accepted; superseded for `core` by ADR 0014
 - Date: 2026-11-06
 
 ## Context
