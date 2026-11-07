@@ -18,6 +18,8 @@ allow = [
     "BSD-2-Clause",
     "BSD-3-Clause",
     "ISC",
+    # BSD Zero Clause: permissive, without even the attribution of MIT (quoted_printable, under lettre).
+    "0BSD",
     "Zlib",
     "MPL-2.0",
     "Unicode-3.0",

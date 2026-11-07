@@ -86,6 +86,7 @@ tag in `uses` and pass the same one as `rules-ref`:
 | `v1.4.0` | One version for `Ruchoir/core` (ADR 0013) |
 | `v1.5.0` | `core` under the MPL-2.0 (ADR 0014); events through the hub (ADR 0015); the hub's socket ticket (ADR 0016); a role's permissions (ADR 0017) |
 | `v1.6.0` | The `rust` workflow can run the tests next to PostgreSQL and Valkey (`postgres`, `valkey`) |
+| `v1.7.0` | `deny.toml` allows `0BSD` |
 
 ## Licence
 
