@@ -7,7 +7,15 @@ all-features = true
 
 [advisories]
 # Every RustSec advisory fails the check, unless it is listed here with the reason and the date.
-ignore = []
+ignore = [
+    # 2026-11-07, decided by Théo. The Marvin attack recovers an RSA private key from the timing of
+    # many private-key operations an attacker triggers at will. `rsa` comes in through jwt-simple
+    # (Propolis, which signs and verifies ES256 and EdDSA only: no RSA operation runs) and
+    # jsonwebtoken (the push relay, which signs one Google token every 40 minutes, cached: nobody
+    # can trigger operations). To revisit when `rsa` 0.10 is released, or when a service starts to
+    # use RSA keys (RS256 clients of Propolis).
+    { id = "RUSTSEC-2023-0071", reason = "no RSA private-key operation an attacker can trigger; see the comment above" },
+]
 
 [licenses]
 # Licences a dependency may carry. Copyleft beyond the AGPL family and unknown licences are refused.
