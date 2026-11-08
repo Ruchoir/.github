@@ -14,12 +14,10 @@ needs a new entry.
 | React, Next.js, React Native, Expo | US | Libraries only. No hosted Expo service is used by anything built or shipped (no EAS Build, Update, Submit or push), and the Expo CLI always runs with `EXPO_NO_TELEMETRY=1`. | No equivalent European or neutral stack for the web and native interfaces. | `ruchoir` AGENTS.md, ADR 0005 |
 | Expo account | US | Development only: it signs the manifests Expo Go needs on a physical iPhone. The project id stays out of the repositories. | Expo Go on an iPhone refuses an unsigned manifest. | `ruchoir` ADR 0005 |
 | GitHub and GitHub Actions | US | Code hosting, and builds on GitHub's runners (web, native and desktop apps). Nothing at runtime. | To be revisited if a European forge with macOS runners becomes practical. | `ruchoir` ADR 0005 (amended 2026-10-14), ADR 0008 |
-| Playwright and axe-core | US | Lab's audit runner (responsive and accessibility tests). | Proposed extension: the end-to-end tests of `Ruchoir/installer`. | `lab` ADR 0001 |
+| Playwright and axe-core | US | Lab's audit runner (responsive and accessibility tests), and the end-to-end tests of `Ruchoir/installer` (a complete instance driven in a browser, in CI). Nothing at runtime. | No European or neutral browser automation drives the three engines; the tests run on CI runners only. | `lab` ADR 0001; extension decided 2026-11-08 (installer v0 plan) |
 | Google and Microsoft sign-in (OpenID Connect) | US | Optional upstream identity providers, disabled by default, turned on by an instance's administrator. | People who already sign in there ask for it; nothing is contacted unless an instance opts in. | `ruchoir` AGENTS.md (Auth) |
 
 ## To confirm
 
 - **Apple notarisation** of the macOS desktop app: a build-time Apple service, not recorded as an
   exception yet.
-- **Playwright in `Ruchoir/installer`**: the end-to-end tests decided for the foundations would widen
-  the Lab entry above.
