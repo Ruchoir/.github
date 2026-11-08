@@ -28,6 +28,9 @@ allow = [
     "ISC",
     # BSD Zero Clause: permissive, without even the attribution of MIT (quoted_printable, under lettre).
     "0BSD",
+    # Creative Commons Zero: a public-domain dedication, without any condition (tiny-keccak, built
+    # under rust-s3, the drive's client of the object store; decided 2026-11-08).
+    "CC0-1.0",
     "Zlib",
     "MPL-2.0",
     "Unicode-3.0",
