@@ -15,6 +15,20 @@ ignore = [
     # can trigger operations). To revisit when `rsa` 0.10 is released, or when a service starts to
     # use RSA keys (RS256 clients of Propolis).
     { id = "RUSTSEC-2023-0071", reason = "no RSA private-key operation an attacker can trigger; see the comment above" },
+    # 2026-11-08, decided in autonomy for Théo's review. Typst (0.15.1, the latest) prints the
+    # calendar to PDF from a template and a data file the calendar writes itself, with fonts it
+    # ships. These advisories sit in Typst's dependencies: two in quick-xml, read only by hayagriva to
+    # parse bibliography files (CSL/BibLaTeX) the calendar never hands it, and crates their authors
+    # no longer maintain (bincode, paste, rustybuzz, ttf-parser, serde_yaml, yaml-rust), none fed
+    # anything a person sends. To revisit at each Typst release.
+    { id = "RUSTSEC-2026-0194", reason = "quick-xml under hayagriva: no bibliography is parsed; see the comment above" },
+    { id = "RUSTSEC-2026-0195", reason = "quick-xml under hayagriva: no bibliography is parsed; see the comment above" },
+    { id = "RUSTSEC-2025-0141", reason = "bincode unmaintained, under Typst; see the comment above" },
+    { id = "RUSTSEC-2024-0436", reason = "paste unmaintained, under Typst; see the comment above" },
+    { id = "RUSTSEC-2026-0206", reason = "rustybuzz unmaintained, under Typst; fonts are the calendar's own" },
+    { id = "RUSTSEC-2026-0192", reason = "ttf-parser unmaintained, under Typst; fonts are the calendar's own" },
+    { id = "RUSTSEC-2024-0449", reason = "serde_yaml unmaintained, under Typst; no YAML from a person is read" },
+    { id = "RUSTSEC-2024-0320", reason = "yaml-rust unmaintained, under syntect in Typst; no YAML from a person is read" },
 ]
 
 [licenses]
