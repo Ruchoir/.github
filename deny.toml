@@ -29,6 +29,15 @@ ignore = [
     { id = "RUSTSEC-2026-0192", reason = "ttf-parser unmaintained, under Typst; fonts are the calendar's own" },
     { id = "RUSTSEC-2024-0449", reason = "serde_yaml unmaintained, under Typst; no YAML from a person is read" },
     { id = "RUSTSEC-2024-0320", reason = "yaml-rust unmaintained, under syntect in Typst; no YAML from a person is read" },
+    # 2026-11-10, decided in autonomy for Théo's review. The desktop app (Tauri) pulls these on Linux
+    # only. zvariant, zbus_names and zvariant_derive come in through zbus, the D-Bus client that
+    # shows notifications and the tray icon, on the local desktop bus with local messages only.
+    # proc-macro-error is a build-time macro under GTK, through Tauri's Linux tray. All are crates
+    # their authors no longer maintain, not vulnerabilities. To revisit at each Tauri release.
+    { id = "RUSTSEC-2026-0370", reason = "zvariant unmaintained, under zbus in Tauri; local desktop bus only" },
+    { id = "RUSTSEC-2026-0371", reason = "zbus_names unmaintained, under zbus in Tauri; local desktop bus only" },
+    { id = "RUSTSEC-2026-0372", reason = "zvariant_derive unmaintained, under zbus in Tauri; build-time macro" },
+    { id = "RUSTSEC-2024-0370", reason = "proc-macro-error unmaintained, under GTK in Tauri; build-time macro" },
 ]
 
 [licenses]
