@@ -12,6 +12,7 @@ that span several repositories, and the CI they all call. Nothing here runs in p
 | `dependency-exceptions.md` | The only list of accepted exceptions to the dependency rule |
 | `docs/adr/` | Decisions that touch several repositories |
 | `docs/api-style-guide.md` | How the API of every Ruchoir service looks |
+| `docs/app-compatibility.md` | How apps and services of different versions keep working together |
 | `.github/workflows/conventions.yml`, `rust.yml`, `node.yml` | Reusable workflows the other repositories call |
 | `.github/workflows/cla.yml` | The reusable check that asks outside contributors to sign `CLA.md` (ADR 0019) |
 | `scripts/check-conventions.sh` | The conventions check, also runnable locally |
