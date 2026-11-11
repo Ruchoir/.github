@@ -12,6 +12,7 @@ that span several repositories, and the CI they all call. Nothing here runs in p
 | `docs/adr/` | Decisions that touch several repositories |
 | `docs/api-style-guide.md` | How the API of every Ruchoir service looks |
 | `.github/workflows/conventions.yml`, `rust.yml`, `node.yml` | Reusable workflows the other repositories call |
+| `.github/workflows/cla.yml` | The reusable check that asks outside contributors to sign `CLA.md` (ADR 0019) |
 | `scripts/check-conventions.sh` | The conventions check, also runnable locally |
 | `scripts/configure-repo.sh` | Applies the organization's settings to a repository |
 | `deny.toml` | The cargo-deny configuration of the Rust workflow |
@@ -51,6 +52,36 @@ Once the repository holds code, add the language jobs the same way:
 A service whose tests need its stores adds `postgres: true` and `valkey: true` to the `rust` job (from
 `v1.6.0`). They then find them in `RUCHOIR_TEST_DATABASE_URL` and `RUCHOIR_TEST_VALKEY_URL`, and
 `RUCHOIR_TEST_STORES=required` tells them not to skip.
+
+Every public repository also asks outside contributors to sign the contributor licence agreement,
+from its own `.github/workflows/cla.yml` (`pull_request_target` takes the workflow from the base
+branch, so a pull request cannot change it):
+
+```yaml
+name: CLA
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, closed]
+  issue_comment:
+    types: [created]
+
+permissions:
+  actions: write
+  contents: read
+  pull-requests: write
+  statuses: write
+
+jobs:
+  cla:
+    uses: Ruchoir/.github/.github/workflows/cla.yml@v2.0.0
+    secrets:
+      signatures-token: ${{ secrets.CLA_SIGNATURES_TOKEN }}
+```
+
+It records signatures in the private repository `Ruchoir/cla-signatures`, with the organization
+secret `CLA_SIGNATURES_TOKEN`. Until both exist, a pull request by a member of the team passes with a
+warning, and anyone else's fails.
 
 The `conventions` check fails when:
 

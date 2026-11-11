@@ -132,6 +132,9 @@ private repositories can call its workflows.
 - `.github/workflows/conventions.yml`, `rust.yml` and `node.yml` are the reusable workflows the other
   repositories call, pinned to a tag of this repository. `ci.yml` is this repository's own CI: it
   calls `conventions.yml` from the same commit.
+- `.github/workflows/cla.yml` is the reusable contributor licence agreement check (ADR 0019), called
+  by every public repository on `pull_request_target`; `cla-check.yml` calls it for this one. It never
+  checks out a pull request's code, and must not: `pull_request_target` runs with write permissions.
 - `scripts/check-conventions.sh` is the conventions check; `scripts/configure-repo.sh` applies the
   organization's settings to a repository; `deny.toml` is the cargo-deny configuration of `rust.yml`.
 
