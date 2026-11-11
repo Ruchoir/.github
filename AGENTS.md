@@ -124,6 +124,8 @@ private repositories can call its workflows.
   top of its `AGENTS.md`, and the `conventions` check fails when a copy differs.
 - `CONTRIBUTING.md` and `pull_request_template.md` are shown by GitHub in every repository that has
   none of its own.
+- `CLA.md` is the contributor licence agreement (ADR 0019). Its terms change only with a new version
+  of the agreement, whose signatures are kept apart from the previous one's.
 - `dependency-exceptions.md` is the only list of accepted exceptions to golden rule 2.
 - `docs/adr/` holds the decisions that touch several repositories; `docs/api-style-guide.md`, how the
   API of every service looks.
