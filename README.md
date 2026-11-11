@@ -29,20 +29,20 @@ on:
 
 jobs:
   conventions:
-    uses: Ruchoir/.github/.github/workflows/conventions.yml@v1.0.1
+    uses: Ruchoir/.github/.github/workflows/conventions.yml@v2.0.0
     with:
-      rules-ref: v1.0.1
+      rules-ref: v2.0.0
 ```
 
 Once the repository holds code, add the language jobs the same way:
 
 ```yaml
   rust:
-    uses: Ruchoir/.github/.github/workflows/rust.yml@v1.0.1
+    uses: Ruchoir/.github/.github/workflows/rust.yml@v2.0.0
     with:
-      rules-ref: v1.0.1
+      rules-ref: v2.0.0
   node:
-    uses: Ruchoir/.github/.github/workflows/node.yml@v1.0.1
+    uses: Ruchoir/.github/.github/workflows/node.yml@v2.0.0
     with:
       scripts: lint typecheck test i18n:check
 ```
@@ -66,9 +66,9 @@ tag in `uses` and pass the same one as `rules-ref`:
 
 ```yaml
   rust:
-    uses: Ruchoir/.github/.github/workflows/rust.yml@v1.0.1
+    uses: Ruchoir/.github/.github/workflows/rust.yml@v2.0.0
     with:
-      rules-ref: v1.0.1
+      rules-ref: v2.0.0
 ```
 
 - A fix or an addition that keeps every caller passing is a new patch or minor tag. Each repository
@@ -90,6 +90,10 @@ tag in `uses` and pass the same one as `rules-ref`:
 | `v1.8.0` | Propolis's organisation routes (ADR 0018) |
 | `v1.9.0` | cargo-deny checks every member of a workspace; RUSTSEC-2023-0071 ignored, with its reason |
 | `v1.10.0` | The `node` workflow installs the `@ruchoir` packages from GitHub Packages (`github-packages`) |
+| `v1.11.0` | `deny.toml` allows `CC0-1.0`; Playwright also runs the installer's end-to-end tests |
+| `v1.12.0` | `deny.toml` accepts the advisories under Typst, which prints the calendar |
+| `v1.13.0` | `deny.toml` accepts the unmaintained crates under Tauri's Linux desktop stack |
+| `v2.0.0` | Common rules v2: merge commits for moved history, release rules limited to the services, one version for `core`, `core` under the MPL-2.0, the contributor licence agreement, private vulnerability reports |
 
 ## Licence
 
