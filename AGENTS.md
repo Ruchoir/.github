@@ -131,7 +131,8 @@ private repositories can call its workflows.
   of the agreement, whose signatures are kept apart from the previous one's.
 - `dependency-exceptions.md` is the only list of accepted exceptions to golden rule 2.
 - `docs/adr/` holds the decisions that touch several repositories; `docs/api-style-guide.md`, how the
-  API of every service looks.
+  API of every service looks; `docs/app-compatibility.md`, how apps and services of different versions
+  keep working together (the contract that only grows, the features, the manifest).
 - `profile/README.md` is the organization's page on GitHub; `docs/architecture.md` the map of the
   repositories and of an instance (its diagram is Mermaid, which GitHub draws);
   `docs/getting-started.md` the path from a fresh machine to a first pull request. Keep them true when
