@@ -1,0 +1,117 @@
+# Reusable: asks the authors of a pull request to sign the contributor licence agreement (CLA.md,
+# ADR 0019), and records each signature in the private repository Ruchoir/cla-signatures.
+#
+# Call it from a public repository's `.github/workflows/cla.yml`:
+#
+#   name: CLA
+#   on:
+#     pull_request_target:
+#       types: [opened, reopened, synchronize, closed]
+#     issue_comment:
+#       types: [created]
+#   permissions:
+#     actions: write
+#     contents: read
+#     pull-requests: write
+#     statuses: write
+#   jobs:
+#     cla:
+#       uses: Ruchoir/.github/.github/workflows/cla.yml@v2.0.0
+#       secrets:
+#         signatures-token: ${{ secrets.CLA_SIGNATURES_TOKEN }}
+#
+# `pull_request_target` runs with the base branch's workflow and a token that can comment: it is safe
+# here because nothing checks out or runs the pull request's code.
+#
+# CLA Assistant Lite (`contributor-assistant/github-action`, Apache-2.0, published by SAP, Germany)
+# reads the authors of the pull request's commits, skips the allow list, and keeps one signature per
+# account in `signatures/v1/cla.json` of Ruchoir/cla-signatures, written with `signatures-token` (an
+# organization secret, CLA_SIGNATURES_TOKEN, that can write that repository). Its repository is
+# archived: it is pinned by commit, and replaced by a fork or another tool if it stops running.
+name: CLA
+
+on:
+  workflow_call:
+    inputs:
+      allowlist:
+        description: Accounts that never sign (the team and bots), comma-separated; `*` matches any characters.
+        type: string
+        default: theovil1,Glouna1117,*[bot]
+    secrets:
+      signatures-token:
+        description: A token that can write to Ruchoir/cla-signatures.
+        required: false
+
+permissions:
+  actions: write
+  contents: read
+  pull-requests: write
+  statuses: write
+
+jobs:
+  cla:
+    name: Contributor licence agreement
+    runs-on: ubuntu-latest
+    # A pull request's events, and on a comment only the signing sentence or `recheck`, on a pull
+    # request. Keep the sentence equal to `custom-pr-sign-comment` below and to CLA.md.
+    if: >-
+      github.event_name == 'pull_request_target' ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request &&
+       (github.event.comment.body == 'recheck' ||
+        github.event.comment.body == 'I have read the Ruchoir CLA and I hereby sign it.'))
+    steps:
+      # Until Ruchoir/cla-signatures and its token exist, a team member's pull request passes with a
+      # warning, and anyone else's fails: nothing could record their signature.
+      - name: Check that signatures can be recorded
+        id: store
+        env:
+          HAS_TOKEN: ${{ secrets.signatures-token != '' }}
+          AUTHOR: ${{ github.event.pull_request.user.login || github.event.issue.user.login }}
+          ALLOWLIST: ${{ inputs.allowlist }}
+        run: |
+          if [ "$HAS_TOKEN" = true ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+          IFS=, read -ra allowed <<< "${ALLOWLIST// /}"
+          for pattern in "${allowed[@]}"; do
+            # As the action reads the list: `*` matches any characters, the rest is literal.
+            glob=""
+            IFS='*' read -ra parts <<< "$pattern"
+            for i in "${!parts[@]}"; do
+              [ "$i" -gt 0 ] && glob+="*"
+              [ -n "${parts[$i]}" ] && glob+="$(printf '%q' "${parts[$i]}")"
+            done
+            [[ "$pattern" == *"*" ]] && glob+="*"
+            # shellcheck disable=SC2053 # the pattern is a glob on purpose
+            if [[ "$AUTHOR" == $glob ]]; then
+              echo "::warning::CLA signatures are not set up yet (Ruchoir/cla-signatures and CLA_SIGNATURES_TOKEN); $AUTHOR is on the allow list"
+              exit 0
+            fi
+          done
+          echo "::error::CLA signatures are not set up yet (Ruchoir/cla-signatures and CLA_SIGNATURES_TOKEN): a maintainer has to set them up before this pull request can be checked"
+          exit 1
+
+      - name: Ask for the agreement and record signatures
+        if: steps.store.outputs.ready == 'true'
+        # v2.6.1, its last release, from an archived repository.
+        uses: contributor-assistant/github-action@ca4a40a7d1004f18d9960b404b97e5f30a505a08 # v2.6.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.signatures-token }}
+        with:
+          path-to-document: https://github.com/Ruchoir/.github/blob/main/CLA.md
+          path-to-signatures: signatures/v1/cla.json
+          remote-organization-name: Ruchoir
+          remote-repository-name: cla-signatures
+          branch: main
+          allowlist: ${{ inputs.allowlist }}
+          custom-pr-sign-comment: I have read the Ruchoir CLA and I hereby sign it.
+          custom-notsigned-prcomment: >-
+            Thank you for this pull request. Before it can be merged, each of its authors signs the
+            [Ruchoir Contributor Licence Agreement](https://github.com/Ruchoir/.github/blob/main/CLA.md),
+            once for every repository of the organization. Read it, then post the comment below.
+          custom-allsigned-prcomment: Every author of this pull request has signed the contributor licence agreement.
+          create-file-commit-message: "chore: start the signatures of version 1 of the CLA"
+          signed-commit-message: "chore: $contributorName signs version 1 of the CLA in $owner/$repo#$pullRequestNo"
