@@ -23,3 +23,4 @@ accepted ADR is never rewritten: a later one supersedes it, and both say so.
 | [0016](0016-a-ticket-to-open-the-hub-socket.md) | A page opens the hub's socket with a single-use ticket from its product |
 | [0017](0017-a-roles-permissions-live-in-each-product.md) | Propolis holds a role's identity; each product holds what the role may do in it |
 | [0018](0018-propolis-routes-name-organisations.md) | Propolis's organisation routes live under `/api/v1/organisations` (supersedes 0010 for them) |
+| [0019](0019-contributions-under-a-cla-and-private-vulnerability-reports.md) | Outside pull requests under a contributor licence agreement; vulnerabilities through GitHub's private reporting only |
