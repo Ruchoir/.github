@@ -65,10 +65,20 @@ confidence-threshold = 0.9
 # 2026-11-11, decided in autonomy for Théo's review. Lab, the team's internal tool, is proprietary: its
 # own crates name `LicenseRef-Ruchoir-Proprietary`, allowed for them alone. Every dependency still
 # needs a licence of the list above.
+# The same for its licence signer, and for `ruchoir-licence`, the enterprise module's licence formats
+# Lab signs with (proprietary, from the private enterprise repository, which names no licence in
+# its manifest: clarified below).
 exceptions = [
     { crate = "lab", allow = ["LicenseRef-Ruchoir-Proprietary"] },
     { crate = "lab-migration", allow = ["LicenseRef-Ruchoir-Proprietary"] },
+    { crate = "lab-signer", allow = ["LicenseRef-Ruchoir-Proprietary"] },
+    { crate = "ruchoir-licence", allow = ["LicenseRef-Ruchoir-Proprietary"] },
 ]
+
+[[licenses.clarify]]
+crate = "ruchoir-licence"
+expression = "LicenseRef-Ruchoir-Proprietary"
+license-files = []
 
 [bans]
 multiple-versions = "allow"
