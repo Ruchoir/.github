@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/Ruchoir/.github/blob/main/SECURITY.md
+    about: Never in an issue. Use GitHub's private vulnerability reporting, as the security policy explains.
+  - name: Contributing to Ruchoir
+    url: https://github.com/Ruchoir/.github/blob/main/CONTRIBUTING.md
+    about: How to set up, change and test a repository, and the contributor licence agreement.

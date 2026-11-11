@@ -7,6 +7,7 @@ that span several repositories, and the CI they all call. Nothing here runs in p
 |---|---|
 | `common-rules.md` | The common rules block, copied unchanged at the top of every repository's `AGENTS.md` |
 | `CONTRIBUTING.md`, `pull_request_template.md` | Shown by GitHub in every repository of the organization that has none of its own |
+| `SECURITY.md`, `.github/ISSUE_TEMPLATE/` | The security policy and the issue templates, shown in every repository that has none of its own |
 | `CLA.md` | The contributor licence agreement an outside contributor signs on their first pull request (ADR 0019) |
 | `dependency-exceptions.md` | The only list of accepted exceptions to the dependency rule |
 | `docs/adr/` | Decisions that touch several repositories |
