@@ -10,6 +10,9 @@ that span several repositories, and the CI they all call. Nothing here runs in p
 | `SECURITY.md`, `.github/ISSUE_TEMPLATE/` | The security policy and the issue templates, shown in every repository that has none of its own |
 | `CLA.md` | The contributor licence agreement an outside contributor signs on their first pull request (ADR 0019) |
 | `dependency-exceptions.md` | The only list of accepted exceptions to the dependency rule |
+| `profile/README.md` | The organization's page on GitHub |
+| `docs/architecture.md` | How the repositories and the services of an instance fit together |
+| `docs/getting-started.md` | From a fresh machine to an instance running from source, then a first pull request |
 | `docs/adr/` | Decisions that touch several repositories |
 | `docs/api-style-guide.md` | How the API of every Ruchoir service looks |
 | `.github/workflows/conventions.yml`, `rust.yml`, `node.yml` | Reusable workflows the other repositories call |

@@ -132,6 +132,10 @@ private repositories can call its workflows.
 - `dependency-exceptions.md` is the only list of accepted exceptions to golden rule 2.
 - `docs/adr/` holds the decisions that touch several repositories; `docs/api-style-guide.md`, how the
   API of every service looks.
+- `profile/README.md` is the organization's page on GitHub; `docs/architecture.md` the map of the
+  repositories and of an instance (its diagram is Mermaid, which GitHub draws);
+  `docs/getting-started.md` the path from a fresh machine to a first pull request. Keep them true when
+  a repository, a service or a command changes.
 - `.github/workflows/conventions.yml`, `rust.yml` and `node.yml` are the reusable workflows the other
   repositories call, pinned to a tag of this repository. `ci.yml` is this repository's own CI: it
   calls `conventions.yml` from the same commit.
