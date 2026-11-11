@@ -124,6 +124,9 @@ private repositories can call its workflows.
   top of its `AGENTS.md`, and the `conventions` check fails when a copy differs.
 - `CONTRIBUTING.md` and `pull_request_template.md` are shown by GitHub in every repository that has
   none of its own.
+- `SECURITY.md` and `.github/ISSUE_TEMPLATE/` (a bug report, a feature request, a link to the security
+  policy instead of blank issues) are shown by GitHub in every repository too. Vulnerabilities are
+  reported only through GitHub's private vulnerability reporting (ADR 0019).
 - `CLA.md` is the contributor licence agreement (ADR 0019). Its terms change only with a new version
   of the agreement, whose signatures are kept apart from the previous one's.
 - `dependency-exceptions.md` is the only list of accepted exceptions to golden rule 2.
