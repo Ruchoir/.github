@@ -130,7 +130,8 @@ tag in `uses` and pass the same one as `rules-ref`:
 | `v1.11.0` | `deny.toml` allows `CC0-1.0`; Playwright also runs the installer's end-to-end tests |
 | `v1.12.0` | `deny.toml` accepts the advisories under Typst, which prints the calendar |
 | `v1.13.0` | `deny.toml` accepts the unmaintained crates under Tauri's Linux desktop stack |
-| `v2.0.0` | Common rules v2: merge commits for moved history, release rules limited to the services, one version for `core`, `core` under the MPL-2.0, the contributor licence agreement, private vulnerability reports |
+| `v1.14.0` | `deny.toml` allows Lab's proprietary licence on its own crates, its licence signer and the licence formats it signs |
+| `v2.0.0` | Common rules v2: merge commits for moved history, release rules limited to the services, one version for `core`, `core` under the MPL-2.0, the contributor licence agreement (ADR 0019), private vulnerability reports. The `cla.yml` workflow; `CLA.md`, `SECURITY.md` and the issue templates; `configure-repo.sh` opens issues and private reporting on public repositories; the organization's page, the architecture, the getting-started guide and app compatibility |
 
 ## Licence
 
