@@ -40,10 +40,12 @@ done
 ```
 
 Propolis and the hub are needed for any instance; take only the products you want among `drive`,
-`calendar` and `chat` (the chat needs the drive). `.github` holds the conventions check you run
-before a pull request. The apps, [`desktop`](https://github.com/Ruchoir/desktop) and
-[`mobile`](https://github.com/Ruchoir/mobile), connect to an instance like this one; their READMEs
-say how to run them.
+`calendar` and `chat` (the chat needs the drive). Until every service is published, some of these
+repositories may still be private: a clone that fails with `Repository not found` needs access from
+the team. Propolis is required; a product you cannot clone is left out of `--products`. `.github`
+holds the conventions check you run before a pull request. The apps,
+[`desktop`](https://github.com/Ruchoir/desktop) and [`mobile`](https://github.com/Ruchoir/mobile),
+connect to an instance like this one; their READMEs say how to run them.
 
 ## 3. Install the installer
 
@@ -62,6 +64,9 @@ From the `ruchoir` directory that holds the checkouts:
 NODE_AUTH_TOKEN=<your token> ruchoir-install dev --source . --products drive,calendar,chat
 ```
 
+Name only the products you checked out; without `--products`, the instance runs Propolis and the
+hub alone, which is enough to work on the hub.
+
 The installer writes the instance to `ruchoir-dev/`, builds the image of each service from its
 checkout, and starts everything with Docker Compose: Propolis, the hub, the reverse proxy, the
 products asked, their stores, and a mail catcher. The first run takes a while (every image is built,
@@ -76,6 +81,14 @@ and the office engine takes a minute or two to start). Then:
   another browser may need these names in your hosts file.
 - **Every mail** the instance sends (address confirmations, invitations) is caught at
   `http://localhost:8025`.
+- **Outside a browser** (curl, a script, the desktop app), Windows does not resolve `*.localhost`:
+  `ruchoir-install hosts --dir ruchoir-dev --write`, from a terminal run as administrator, adds the
+  names to its hosts file. Those programs must trust the authority too: `curl --cacert
+  ruchoir-dev/dev-ca/ca.pem`, plus `--ssl-no-revoke` with the curl of Windows, which otherwise
+  refuses a certificate whose revocation it cannot check.
+
+The instance takes ports 443 and 8025, and is its own Compose project, named after its directory and
+its path: two instances in different directories never share data, but only one runs at a time.
 
 `ruchoir-install down --dir ruchoir-dev` stops the instance, and its data stays. Running the same
 `dev` command again rebuilds the images and starts it; the products installed before are kept.
@@ -106,7 +119,8 @@ through the hub.
 ## 6. Work on one product
 
 Each repository runs and tests on its own, without the others: its `README.md` gives the exact
-commands, and its `AGENTS.md` the settings, the layout and the gotchas. The drive, for example:
+commands (they differ a little: the hub, for one, tests with `--all-features`), and its `AGENTS.md`
+the settings, the layout and the gotchas. The drive, for example:
 
 ```bash
 cd drive
@@ -120,8 +134,20 @@ cd web && pnpm install --frozen-lockfile && pnpm typecheck && pnpm test && pnpm 
 ```
 
 The other services are replaced in the tests by stand-ins built from their contracts, so no other
-repository needs to be checked out. To see a change in the whole instance, run the `dev` command of
-step 4 again: it rebuilds the images from your checkouts.
+repository needs to be checked out. A repository's `compose.yaml` publishes its stores on
+`127.0.0.1:5432` and `127.0.0.1:6379`: if a PostgreSQL or Valkey of your own already holds a port,
+move it in a `compose.override.yaml` beside it (yours alone: never commit it) and point the test
+URL at the new port:
+
+```yaml
+services:
+  postgres:
+    ports: !override
+      - "127.0.0.1:55432:5432"
+```
+
+To see a change in the whole instance, run the `dev` command of step 4 again: it rebuilds the images
+from your checkouts.
 
 ## 7. Open a pull request
 
@@ -133,7 +159,8 @@ step 4 again: it rebuilds the images from your checkouts.
    bash ../.github/scripts/check-conventions.sh ../.github/common-rules.md
    ```
 
-3. Push to your fork and open the pull request. The first time, sign the
+3. Fork the repository (`gh repo fork --remote`, or the Fork button), push your branch to the fork
+   and open the pull request against `main`. The first time, sign the
    [contributor licence agreement](../CLA.md) with a comment, as the `CLA` check asks.
 
 The whole process, and what a pull request carries: [`CONTRIBUTING.md`](../CONTRIBUTING.md).
@@ -146,5 +173,8 @@ The whole process, and what a pull request carries: [`CONTRIBUTING.md`](../CONTR
   for the `dev` command.
 - **The browser warns about the certificate**: the local authority, `ruchoir-dev/dev-ca/ca.pem`, is
   not trusted yet in that browser (some browsers keep their own list, apart from the system's).
+- **Propolis stops on `password authentication failed`**: the instance found the database of
+  another one. An installer older than the per-directory Compose projects ran every development
+  instance as `ruchoir`: update the installer (step 3) and run `dev` again.
 - **A product added to an instance that already ran has no database**: the database is created on
   the first start only. The installer's `AGENTS.md` (section "Gotchas") gives the statements to run.
